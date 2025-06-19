@@ -1,0 +1,5 @@
+# Ignore build cache
+node_modules/
+dist/
+.cache/
+.gh-pages-tmp/
