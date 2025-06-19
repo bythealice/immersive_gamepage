@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const AnimatedTitle = ({ title, containerClass }) => {
+const AnimatedTitle = ({ title, containerClass, stagger = 0.02 }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -20,19 +20,19 @@ const AnimatedTitle = ({ title, containerClass }) => {
       });
 
       titleAnimation.to(
-        ".animated-word",
+        containerRef.current.querySelectorAll(".animated-word"),
         {
           opacity: 1,
           transform: "translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg)",
           ease: "power2.inOut",
-          stagger: 0.02,
+          stagger,
         },
         0
       );
     }, containerRef);
 
     return () => ctx.revert(); // Clean up on unmount
-  }, []);
+  }, [stagger]);
 
   return (
     <div ref={containerRef} className={clsx("animated-title", containerClass)}>
@@ -45,6 +45,7 @@ const AnimatedTitle = ({ title, containerClass }) => {
             <span
               key={idx}
               className="animated-word"
+              aria-hidden="true"
               dangerouslySetInnerHTML={{ __html: word }}
             />
           ))}
